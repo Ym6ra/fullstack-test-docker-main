@@ -1,21 +1,42 @@
 
 <?php 
-//$deletID = 4;
-//	function setID($id){
-//		$deletID = $id;
-//	}?>
+$sortByIdUp = true;
+$sortByIdDown = false;
+$sortByDateUp = false;
+$sortByDateDown = false;
+
+$sortByIdUpData = [$productPage,$commentPage,$sortByIdUp,$sortByIdDown,$sortByDateUp,$sortByDateDown];
+$dataIdUp = json_encode($sortByIdUpData);
+$urlDataIdUp= urlencode($dataIdUp);
+$urlIdUp = 'http://localhost/' . $urlDataIdUp;
+
+$sortByIdDownData = [$productPage,$commentPage,!$sortByIdUp,!$sortByIdDown,$sortByDateUp,$sortByDateDown];
+$dataIdDown = json_encode($sortByIdDownData);
+$urlDataIdDown= urlencode($dataIdDown);
+$urlIdDown = 'http://localhost/' . $urlDataIdDown;
+
+$sortByDateUpData = [$productPage,$commentPage,!$sortByIdUp,$sortByIdDown,!$sortByDateUp,$sortByDateDown];
+$dataDateUp = json_encode($sortByDateUpData);
+$urlDataDateUp= urlencode($dataDateUp);
+$urlDateUp = 'http://localhost/' . $urlDataDateUp;
+
+$sortByDateDownData = [$productPage,$commentPage,!$sortByIdUp,$sortByIdDown,$sortByDateUp,!$sortByDateDown];
+$dataDateDown = json_encode($sortByDateDownData);
+$urlDataDateDown= urlencode($dataDateDown);
+$urlDateDown = 'http://localhost/' . $urlDataDateDown;
+?>
 <div class="container">
 	<div class="row">
 		<div class="col-12 col-lg-6">
 			<?php 
 				$nextProductPage = $productPage +1;
-				$nextProductData = [$nextProductPage,$commentPage];
+				$nextProductData = [$nextProductPage,$commentPage,$sortByIdUp,$sortByIdDown,$sortByDateUp,$sortByDateDown];
 				$dataNext = json_encode($nextProductData);
 				$urlDataNext= urlencode($dataNext);
 				$urlNext = 'http://localhost/' . $urlDataNext;
 
 				$prevProductPage = $productPage -1;
-				$prevProductData = [$prevProductPage,$commentPage];
+				$prevProductData = [$prevProductPage,$commentPage,$sortByIdUp,$sortByIdDown,$sortByDateUp,$sortByDateDown];
 				$dataPrev = json_encode($prevProductPage);
 				$urlDataPrev= urlencode($dataPrev);
 				$urlPrev = 'http://localhost/' . $urlDataPrev;
@@ -28,15 +49,28 @@
 			<div>
 				<table class="table table-bordered">
 				<thead class="thead-dark">
+					<th scope="col"><div>№</div>
+					<div>
+					<a href="<?php echo $urlIdUp ?>"><button class="btn btn-light">↑</button></a></div>
+					<a href="<?php echo $urlIdDown ?>"><button class="btn btn-light">↓</button></a></div>
+					</div>
+					</th>
 					<th scope="col">Почта</th>
 					<th scope="col">Комментарий</th>
-					<th scope="col">Дата создания</th>
+					<th scope="col">
+						<div>Дата создания</div>
+						<div>
+					<a href="<?php echo $urlDateUp ?>"><button class="btn btn-light">↑</button></a></div>
+					<a href="<?php echo $urlDateDown ?>"><button class="btn btn-light">↓</button></a></div>
+					</div>
+					</th>
 					<th scope="col">Управление</th>
 					</thead>
 						<?php for($i = 0; $i<3; $i++){ ?>
 							<?php if($comments['comments'][$i]) { 
 								$trid ="comment".(string)$i;?>
 								<tr id="comment<?php echo $i ?>">
+							<td scope="row"><?php echo $comments['comments'][$i]['id']; ?></td>
 							<td scope="row"><?php echo $comments['comments'][$i]['name']; ?></td>
 							<td scope="row"><?php echo $comments['comments'][$i]['text']; ?></td>
 							<td scope="row"><?php echo $comments['comments'][$i]['date']; ?></td>
@@ -51,12 +85,12 @@
 			<div class="col-md-auto justify-content-md-center">
 			<?php 
 				$nextCommentPage = $commentPage +1;
-				$nextCommentData = [$productPage,$nextCommentPage];
+				$nextCommentData = [$productPage,$nextCommentPage,$sortByIdUp,$sortByIdDown,$sortByDateUp,$sortByDateDown];
 				$dataNext = json_encode($nextCommentData);
 				$urlDataNext= urlencode($dataNext);
 				$urlNext = 'http://localhost/' . $urlDataNext;
 				$prevCommentPage = $commentPage -1;
-				$prevCommentData = [$productPage,$prevCommentPage];
+				$prevCommentData = [$productPage,$prevCommentPage,$sortByIdUp,$sortByIdDown,$sortByDateUp,$sortByDateDown];
 				$dataPrev = json_encode($prevCommentData);
 				$urlDataPrev= urlencode($dataPrev);
 				$urlPrev = 'http://localhost/' . $urlDataPrev;
