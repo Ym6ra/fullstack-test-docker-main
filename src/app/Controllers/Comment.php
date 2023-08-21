@@ -7,13 +7,26 @@ class Comment extends Controller
 {	
     public function add()
     {
+		$this->form_validation = \Config\Services::validation();
+		
 		$currentPage = $this->request->getPost('currentPage');
 		$name = $this->request->getPost('email');
 		$text = $this->request->getPost('text');
 		$date = $this->request->getPost('date');
 		$productID = $this->request->getPost('productID');
-            // Загрузка модели комментария
-            $model = new CommentModel();
+		$data = [
+			'name'=>$name,
+			'text'=>$text,
+			'date'=>$date
+		]; 
+		$this->form_validation->setRules([
+			'name' => 'required',
+			'text' => 'required',
+			'date' => 'required',
+		]);
+
+		if ($this->form_validation->run($data)!==false){
+			$model = new CommentModel();
             // Добавление нового комментария
             $model->save([
                 'name' => $name,
@@ -21,13 +34,15 @@ class Comment extends Controller
 				'date' => $date,
 				'productID' => $productID
             ]);
-			return redirect()->to($currentPage);
+			return $this->response->setJSON(['success' => true]);
+		}else{
+			return $this->response->setJSON(['success' => false, "vals" => $data]);
+		};
     }
 
 	public function delete()
 	{
 		$id = $this->request->getPost('id');
-		//return $this->response->setJSON(['success' => true, 'value' => $id]);
 
 		// Проверка наличия параметра ID
 		if ($id === null) {
@@ -47,5 +62,6 @@ class Comment extends Controller
 
 		// Удаление комментария по ID
 		$model->delete($id);
+		return $this->response->setJSON(['success' => true, 'value' => $id]);
 	}
 }

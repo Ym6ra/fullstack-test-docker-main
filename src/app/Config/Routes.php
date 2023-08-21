@@ -36,7 +36,6 @@ $routes->get('/', 'Home::index');
 $routes->get('/(:segment)', 'Home::product/$1');
 $routes->get('Comment/add', 'Comment::add');
 $routes->get('Comment/delet', 'Comment::delete');
-//$routes->post('Comment/add', 'Comment::add');
 
 
 /*
